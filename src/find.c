@@ -1,11 +1,12 @@
 #include "find.h"
 
-int is_dir(char *path)
+int is_dir(char *path, struct options *opt)
 {
     struct stat st;
     if (stat(path, &st))
     {
-	fprintf(stderr, "Error while getting stats of file : %s\n", path);
+	warnx("cannot do stat: Error while with stats of file : %s", path);
+	opt->return_value = 1;
     }
     if (S_ISDIR(st.st_mode))
     {
@@ -14,12 +15,14 @@ int is_dir(char *path)
     return 0;
 }
 
-void fill_tree(struct tree *root)
+void fill_tree(struct tree *root, struct options *opt)
 {
     DIR *dir = opendir(root->path);
     if (!dir)
     {
-	fprintf(stderr, "find: ‘%s’: No such file or directory\n", root->path);
+	warnx("cannot do opendir: ‘%s’ --> No such file or directory",
+	      root->path);
+	opt->return_value = 1;
     }
     else
     {
@@ -35,19 +38,19 @@ void fill_tree(struct tree *root)
 	}
 	for (struct tree *child = root->children; child; child = child->sibling)
 	{
-	    if (is_dir(child->path))
+	    if (is_dir(child->path, opt))
 	    {
-		fill_tree(child);
+		fill_tree(child, opt);
 	    }
 	}
     }
     closedir(dir);
 }
 
-void find(char *path)
+void find(char *path, struct options *opt)
 {
     struct tree *root = create_tree(path);
-    fill_tree(root);
-    print_tree(root);
+    fill_tree(root, opt);
+    print_tree(root, opt);
     clear_tree(root);
 }

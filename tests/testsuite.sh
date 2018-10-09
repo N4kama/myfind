@@ -1,23 +1,30 @@
 #!/bin/sh
 
-testfile=tests/commands
+printf "Path to binary : "
+read binary
+printf "Path to commands_file : "
+read testfile
+printf "Show student's results in case of succes ? (y/n) : "
+read show_my_res
+echo
 
 success() {
-    printf "RUNNING COMMAND : \"myfind %s\"\n\n" "$2"
+    printf "RUNNING COMMAND : \"$binary %s\"\n\n" "$2"
     printf "RESULT : \e[92mOK\e[0m\n\n"
-    printf "STUDENT'S RESULT :\n$(cat $1)\n"
+    if [[ "$show_my_res" =~ ^[y]+ ]]; then
+	printf "STUDENT'S RESULT :\n$(cat $1)\n"
+    fi
 }
 
 failure() {
-    printf "RUNNING COMMAND : \"myfind %s\"\n\n" "$3"
+    printf "RUNNING COMMAND : \"$binary %s\"\n\n" "$3"
     printf "RESULT : \e[91mBAD\e[0m\n\n"
-    printf "STUDENT'S RESULT :\n\n%s\n\n" "$(cat $1)"
-    printf "SHOULD BE :\n\n%s\n\n" "$(cat $2)"
+    printf "STUDENT'S RESULT :\n\n$(cat $1)\n\n"
+    printf "SHOULD BE :\n\n$(cat $2)\n\n"
 }
 
 while IFS='' read -r command; do
-    echo "------->>>>> $command"
-    my_res=$(./myfind "$command" > file1)
+    my_res=$("$binary" "$command" > file1)
     res=$(find "$command" > file2)
     the_diff=$(diff file1 file2)
     if [ "$?" -eq 0 ]; then

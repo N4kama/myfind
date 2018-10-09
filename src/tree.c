@@ -33,21 +33,21 @@ void add_child(struct tree *root, struct tree *child)
     root->sibling = child;
 }
 
-void print_tree(struct tree *root)
+void print_tree(struct tree *root, struct options *opt)
 {
     if (!root)
     {
         return;
     }
     printf("%s\n", root->path);
-    if (!is_dir(root->path))
+    if (!is_dir(root->path, opt))
     {
 	return;
     }
     root = root->children;
     for (; root; root = root->sibling)
     {
-        print_tree(root);
+        print_tree(root, opt);
     }
 }
 

@@ -1,6 +1,11 @@
 #include "find.h"
 
-//FUNC -> fill options struct with the args ?
+struct options fill_options(void)
+{
+    struct options opt;
+    opt.return_value = 0;
+    return opt;
+}
 
 //FILL the paths list
 
@@ -8,8 +13,10 @@
 
 int main(int argc, char *argv[])
 {
+    struct options opt = fill_options();
     if (argc == 1)
-	find(".");
+	find(".", &opt);
     else
-	find(argv[1]);
+	find(argv[1], &opt);
+    return opt.return_value;
 }
