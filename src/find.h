@@ -19,8 +19,8 @@ struct tree
 };
 
 struct tree *create_tree(char *s);
-void add_sibling(struct tree *root, struct tree *sibling);
 void add_child(struct tree *root, struct tree *child);
+void print_tree(struct tree *root);
 void clear_tree(struct tree *root);
 
 size_t my_strlen(char *s);

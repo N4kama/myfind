@@ -19,6 +19,6 @@ void my_path_concat(char *dst, char *path, char *new, size_t len)
     }
     for (size_t j = 0; j + i < len; j++)
     {
-	dst[i + j] = new[i];
+	dst[i + j] = new[j];
     }
 }

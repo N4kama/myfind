@@ -33,6 +33,20 @@ void add_child(struct tree *root, struct tree *child)
     root->sibling = child;
 }
 
+void print_tree(struct tree *root)
+{
+    if (!root)
+    {
+	return;
+    }
+    printf("%s\n", root->path);
+    root = root->children;
+    for (; root; root = root->sibling)
+    {
+	print_tree(root);
+    }
+}
+
 void clear_tree_rec(struct tree *root)
 {
     if (!root)
