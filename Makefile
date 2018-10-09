@@ -1,8 +1,8 @@
 CC = gcc
-CFLAGS = -g std=c99 -pedantic -Werror -Wall -Wextra
+CFLAGS = -g -std=c99 -pedantic -Werror -Wall -Wextra
 
 RES = myfind
-SRC = main.c
+SRC = src/find.c src/main.c
 
 all:
 	$(CC) $(CFLAGS) $(SRC) -o $(RES)
