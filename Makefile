@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -g -std=c99 -pedantic -Werror -Wall -Wextra
+CFLAGS = -g -std=c99 -pedantic -Werror -Wall -Wextra -D_DEFAULT_SOURCE
 
 RES = myfind
 SRC = src/string.c src/tree.c src/find.c src/main.c

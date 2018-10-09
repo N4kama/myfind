@@ -1,5 +1,19 @@
 #include "find.h"
 
+int is_dir(char *path)
+{
+    struct stat st;
+    if (stat(path, &st))
+    {
+	fprintf(stderr, "Error while getting stats of file : %s\n", path);
+    }
+    if (S_ISDIR(st.st_mode))
+    {
+	return 1;
+    }
+    return 0;
+}
+
 void fill_tree(struct tree *root)
 {
     DIR *dir = opendir(root->path);
@@ -13,15 +27,18 @@ void fill_tree(struct tree *root)
 	readdir(dir);
 	for (cur = readdir(dir); cur; cur = readdir(dir))
 	{
-	    size_t new_len = my_strlen(root->path) + my_strlen(cur->d_name);
+	    size_t new_len = my_strlen(root->path) + my_strlen(cur->d_name) + 2;
 	    char *new_path = malloc(new_len * sizeof(char));
-	    my_path_concat(new_path, root->path, cur->d_name, new_len);
+	    my_path_concat(new_path, root->path, cur->d_name);
 	    struct tree *new = create_tree(new_path);
 	    add_child(root, new);
 	}
 	for (struct tree *child = root->children; child; child = child->sibling)
 	{
-	    fill_tree(child);
+	    if (is_dir(child->path))
+	    {
+		fill_tree(child);
+	    }
 	}
     }
     closedir(dir);

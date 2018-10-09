@@ -10,15 +10,22 @@ size_t my_strlen(char *s)
     return r;
 }
 
-void my_path_concat(char *dst, char *path, char *new, size_t len)
+void my_path_concat(char *dst, char *path, char *new)
 {
     size_t i = 0;
+    size_t j = 0;
     for (; path[i]; i++)
     {
 	dst[i] = path[i];
     }
-    for (size_t j = 0; j + i < len; j++)
+    if (dst[i - 1] != '/')
+    {
+	dst[i] = '/';
+	i++;
+    }
+    for (; new[j]; j++)
     {
 	dst[i + j] = new[j];
     }
+    dst[i + j] = '\0';
 }
