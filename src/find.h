@@ -26,19 +26,7 @@ struct options
     char *fail_option;
 };
 
-struct tree
-{
-    char *path;
-    struct tree *sibling;
-    struct tree *children;
-};
-
 int is_dir(char *path, struct options *opt);
 void find(char *path, struct options *opt);
-
-struct tree *create_tree(char *s);
-void add_child(struct tree *root, struct tree *child);
-void print_tree(struct tree *root, struct options *opt);
-void clear_tree(struct tree *root);
 
 #endif /* !FIND_H */
