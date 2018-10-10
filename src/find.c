@@ -3,54 +3,96 @@
 int is_dir(char *path, struct options *opt)
 {
     struct stat st;
-    if (stat(path, &st))
+    if (lstat(path, &st))
     {
-	warnx("cannot do stat: Error while with stats of file : %s", path);
-	opt->return_value = 1;
+        warnx("cannot do stat: Error while with stats of file : %s", path);
+        opt->return_value = 1;
     }
-    if (S_ISDIR(st.st_mode))
+    if (S_ISDIR(st.st_mode) || (S_ISLNK(st.st_mode) && (opt->symlinks == L ||
+                                                        opt->symlinks == H)))
     {
-	return 1;
+        if (opt->symlinks == H)
+        {
+            opt->symlinks = P;
+        }
+        return 1;
     }
     return 0;
 }
 
-void fill_tree(struct tree *root, struct options *opt)
+static void check_error_dir(char path[], struct options *opt)
 {
-    DIR *dir = opendir(root->path);
+    warnx("cannot do opendir: ‘%s’ --> No such file or directory",
+          path);
+    opt->return_value = 1;
+}
+
+static void find_default(char path[], struct options *opt)
+{
+    if (!is_dir(path, opt))
+    {
+        return;
+    }
+    DIR *dir = opendir(path);
     if (!dir)
     {
-	warnx("cannot do opendir: ‘%s’ --> No such file or directory",
-	      root->path);
-	opt->return_value = 1;
+        check_error_dir(path, opt);
     }
     else
     {
-	struct dirent *cur = readdir(dir);
-	readdir(dir);
-	for (cur = readdir(dir); cur; cur = readdir(dir))
-	{
-	    size_t new_len = my_strlen(root->path) + my_strlen(cur->d_name) + 2;
-	    char *new_path = malloc(new_len * sizeof(char));
-	    my_path_concat(new_path, root->path, cur->d_name);
-	    struct tree *new = create_tree(new_path);
-	    add_child(root, new);
-	}
-	for (struct tree *child = root->children; child; child = child->sibling)
-	{
-	    if (is_dir(child->path, opt))
-	    {
-		fill_tree(child, opt);
-	    }
-	}
+        struct dirent *cur = readdir(dir);
+        readdir(dir);
+        for (cur = readdir(dir); cur; cur = readdir(dir))
+        {
+            size_t len = my_strlen(path) + my_strlen(cur->d_name) + 2;
+            char *new = malloc(len * sizeof(char));
+            my_path_concat(new, path, cur->d_name);
+            printf("%s\n", new);
+            find_default(new, opt);
+            free(new);
+        }
+    }
+    closedir(dir);
+}
+
+static void find_post_order(char path[], struct options *opt)
+{
+    if (!is_dir(path, opt))
+    {
+        return;
+    }
+    DIR *dir = opendir(path);
+    if (!dir)
+    {
+        check_error_dir(path, opt);
+    }
+    else
+    {
+        struct dirent *cur = readdir(dir);
+        readdir(dir);
+        for (cur = readdir(dir); cur; cur = readdir(dir))
+        {
+            size_t len = my_strlen(path) + my_strlen(cur->d_name) + 2;
+            char *new = malloc(len * sizeof(char));
+            my_path_concat(new, path, cur->d_name);
+            find_post_order(new, opt);
+            printf("%s\n", new);
+            free(new);
+        }
     }
     closedir(dir);
 }
 
 void find(char *path, struct options *opt)
 {
-    struct tree *root = create_tree(path);
-    fill_tree(root, opt);
-    print_tree(root, opt);
-    clear_tree(root);
+    if (opt->depth)
+    {
+        find_post_order(path, opt);
+        printf("%s\n", path);
+    }
+    else
+    {
+        printf("%s\n", path);
+        find_default(path, opt);
+    }
 }

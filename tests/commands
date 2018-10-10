@@ -1,3 +1,17 @@
 tests
 
+/
+../
 src
+-d
+-d tests
+-H
+-H tests
+-H tests/link_to_src
+-L tests
+-d -L tests
+-L
+-P
+-P tests
+-L -P -H tests/link_to_src
+-L -P -H -L tests/link_to_src

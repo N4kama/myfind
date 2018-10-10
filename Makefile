@@ -7,7 +7,7 @@ SRC = src/string.c src/tree.c src/find.c src/main.c
 all:
 	$(CC) $(CFLAGS) $(SRC) -o $(RES)
 
-test: all
+check: all
 	./tests/testsuite.sh
 
 clean:
