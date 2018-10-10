@@ -42,7 +42,7 @@ void print_tree(struct tree *root, struct options *opt)
     printf("%s\n", root->path);
     if (!is_dir(root->path, opt))
     {
-	return;
+        return;
     }
     root = root->children;
     for (; root; root = root->sibling)
@@ -56,7 +56,7 @@ void clear_tree_rec(struct tree *root)
     struct tree *tmp = NULL;
     for (; root; root = tmp)
     {
-	clear_tree_rec(root->children);
+        clear_tree_rec(root->children);
         tmp = root->sibling;
         free(root->path);
         free(root);
