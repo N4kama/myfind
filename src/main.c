@@ -1,47 +1,30 @@
 #include "find.h"
 
-int check_options(struct options *opt, char *option)
+void fill_functions(struct function *function)
 {
-    if (option[0] != '-')
-    {
-        return 0;
-    }
-    switch (option[1])
-    {
-    case 'd':
-        opt->depth = 1;
-        break;
-    case 'H':
-        opt->symlinks = H;
-        break;
-    case 'L':
-        opt->symlinks = L;
-        break;
-    case 'P':
-        opt->symlinks = P;
-        break;
-    default:
-        opt->fail_option = option;
-        opt->return_value = 1;
-        return 0;
-    }
-    return 1;
+    //FIX ME WITH FUNC.C FILE
+    function[0].name = print;
+    //function[0].func = expr_print;
+    
+    function[1].name = name;
+    //function[1].func = expr_name;
 }
 
-struct options fill_options(char *argv[], int *start)
+void path_iter(char *argv[], unsigned int start_index,
+               struct options *opt, struct tree *expr)
 {
-    struct options opt =
+    if (is_expression(argv[start_index]))
+    {
+        find(".", opt, expr);
+    }
+    else
+    {
+        for (; !is_expression(argv[start_index]); start_index++)
         {
-            0, 0, 0, NULL
-        };
-    for (; argv[*start] && check_options(&opt, argv[*start]); *start += 1)
-    {
-        continue;
+            find(argv[start_index], opt, expr);
+        }
     }
-    return opt;
 }
-
-//FILL the paths list
 
 int main(int argc, char *argv[])
 {
@@ -49,21 +32,23 @@ int main(int argc, char *argv[])
     {
         return 0;
     }
-    int path_start = 1;
-    struct options opt = fill_options(argv, &path_start);
+    unsigned int path_start = 1;
+    
+    struct function functions[NBR_FUNC];
+    fill_functions(functions); //NEED TO CREATE FUNC.C WITH THE FUNCTION IMPLEM
+    
+    struct options opt = fill_options(argv, &path_start, functions);
     if (opt.return_value)
     {
         warnx("cannot do <check options>: The option given doesn't exist %s",
               opt.fail_option);
         return 1;
     }
-    if (!argv[path_start])
-    {
-        find(".", &opt);
-    }
-    else
-    {
-        find(argv[path_start], &opt);
-    }
+    
+    unsigned int expr_start = expr_find_index(argv, path_start);
+    struct tree *expr = setup_tree(functions, argv, expr_start);
+    
+    path_iter(argv, path_start, &opt, expr);
+    
     return opt.return_value;
 }

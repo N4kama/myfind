@@ -29,3 +29,15 @@ void my_path_concat(char *dst, char *path, char *new)
     }
     dst[i + j] = '\0';
 }
+
+unsigned int my_strcmp(char *a, char *b)
+{
+        while (*a && *b && (*a == *b))
+    {
+	a++;
+	b++;
+    }
+    if (!a || !b || (*a != *b))
+	return 0;
+    return 1;
+}

@@ -27,7 +27,7 @@ static void check_error_dir(char path[], struct options *opt)
     opt->return_value = 1;
 }
 
-static void find_default(char path[], struct options *opt)
+static void find_default(char path[], struct options *opt, struct tree *expr)
 {
     if (!is_dir(path, opt))
     {
@@ -48,14 +48,14 @@ static void find_default(char path[], struct options *opt)
             char *new = malloc(len * sizeof(char));
             my_path_concat(new, path, cur->d_name);
             printf("%s\n", new);
-            find_default(new, opt);
+            find_default(new, opt, expr);
             free(new);
         }
     }
     closedir(dir);
 }
 
-static void find_post_order(char path[], struct options *opt)
+static void find_post_order(char path[], struct options *opt, struct tree *expr)
 {
     if (!is_dir(path, opt))
     {
@@ -75,7 +75,7 @@ static void find_post_order(char path[], struct options *opt)
             size_t len = my_strlen(path) + my_strlen(cur->d_name) + 2;
             char *new = malloc(len * sizeof(char));
             my_path_concat(new, path, cur->d_name);
-            find_post_order(new, opt);
+            find_post_order(new, opt, expr);
             printf("%s\n", new);
             free(new);
         }
@@ -83,16 +83,17 @@ static void find_post_order(char path[], struct options *opt)
     closedir(dir);
 }
 
-void find(char *path, struct options *opt)
+void find(char *path, struct options *opt, struct tree *expr)
 {
+    //FIX ME AND MY OTHER FUNC --> EXPR NOT USED
     if (opt->depth)
     {
-        find_post_order(path, opt);
+        find_post_order(path, opt, expr);
         printf("%s\n", path);
     }
     else
     {
         printf("%s\n", path);
-        find_default(path, opt);
+        find_default(path, opt, expr);
     }
 }
