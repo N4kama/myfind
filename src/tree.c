@@ -21,14 +21,26 @@ struct tree *create_tree(enum mode mode, enum operator op, struct function func)
     return root;
 }
 
-void fill_tree()
-{
-    //Fill the tree (read the cmd, func and priorities)
-}
-
 struct tree *setup_tree(struct function *functions, char *argv[], int start)
 {
-    //FIXME
+    //BULLSHIT
+    //BULLSHIT
+//Handle parenthesis first, then operator, funcs
+    if (functions)
+    {
+	//BULLSHIT
+/*
+        struct tree *root = create_tree(OPERATOR, AND, functions[0]);
+	root->lson = create_tree(FUNC, AND, functions[0]);
+	root->rson = create_tree(FUNC, AND, functions[1]);
+	return root;*/
+	return NULL;
+    }
+    if (argv && start)
+    {
+	return NULL;
+    }
+    return NULL;
 }
 
 void destroy_tree(struct tree *root)

@@ -26,16 +26,17 @@ enum operator
     OR
 };
 
-enum func_name
-{
-    print,
-    name
-};
-
 enum mode
 {
     OPERATOR,
     FUNC
+};
+
+struct function
+{
+    char *name;
+    unsigned int (*func)();
+    char **argv;
 };
 
 struct options
@@ -43,13 +44,8 @@ struct options
     int return_value;
     int depth;
     enum symlinks symlinks;
+    struct function *functions;
     char *fail_option;
-};
-
-struct function
-{
-    enum func_name name;
-    int (*func)(char *path, struct options *opt);
 };
 
 struct tree
@@ -64,10 +60,15 @@ struct tree
 unsigned int is_expr_detailed(char *s, struct function *functions);
 unsigned int is_expression(char *s);
 unsigned int expr_find_index(char *argv[], unsigned int start);
-unsigned int check_options(struct options *opt, char *option,
-			   struct function *functions);
+unsigned int check_options(struct options *opt, char *option);
 struct options fill_options(char *argv[], unsigned int *start,
 			    struct function *functions);
+
+unsigned int expr_name();
+unsigned int expr_type();
+
+struct tree *setup_tree(struct function *functions, char *argv[], int start);
+void destroy_tree(struct tree *root);
 
 unsigned int is_dir(char *path, struct options *opt);
 void find(char *path, struct options *opt, struct tree *expr);

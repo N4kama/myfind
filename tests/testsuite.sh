@@ -14,7 +14,7 @@ success() {
     printf "RUNNING COMMAND : \"$binary %s\"\n\n" "$2"
     printf "RESULT : \e[92mOK\e[0m\n\n"
     if [[ "$show_my_res" =~ ^[y]+ ]]; then
-        printf "STUDENT'S RESULT :\n$1\n"
+        printf "STUDENT'S RESULT :\n$1\n\n"
     fi
 }
 
@@ -25,33 +25,20 @@ failure() {
     printf "SHOULD BE :\n\n$2\n\n"
 }
 
-while IFS='' read -r command; do
-    if [ "$command" == "" ]; then
-	my_res=$("$binary")
-        res=$(find)
-    elif [[ "$command" =~ ^-d ]]; then
-	new_cmd=$(echo "$command" | cut -d ' ' -f2)
-	my_res=$("$binary" -d "$new_cmd")
-        res=$(find "$new_cmd" -depth)
-    elif [[ "$command" =~ ^-H ]]; then
-	new_cmd=$(echo "$command" | cut -d ' ' -f2)
-	my_res=$("$binary" -H "$new_cmd")
-        res=$(find -H "$new_cmd")
-    elif [[ "$command" =~ ^-L ]]; then
-	new_cmd=$(echo "$command" | cut -d ' ' -f2)
-	my_res=$("$binary" -L "$new_cmd")
-        res=$(find -L "$new_cmd")
-    elif [[ "$command" =~ ^-P ]]; then
-	new_cmd=$(echo "$command" | cut -d ' ' -f2)
-	my_res=$("$binary" -P "$new_cmd")
-        res=$(find -P "$new_cmd")
+while IFS='' read -a command; do
+    altcmd=0
+    if [[ "$command" =~ .*-d.* ]]; then
+        altcommand=${command/-d}
+        altcommand="$altcommand"" -depth"
+	my_res=$("$binary" $command)
+	res=$(find $altcommand)
     else
-	my_res=$("$binary" "$command")
-        res=$(find "$command")
+	my_res=$("$binary" $command)
+	res=$(find $command)
     fi
     if test "$my_res" == "$res"; then
 	success "$my_res" "$command"
     else
-        failure "$my_res res" "$command"
+        failure "$my_res" "$res" "$command"
     fi
 done < "$testfile"
