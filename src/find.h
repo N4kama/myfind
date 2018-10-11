@@ -12,7 +12,6 @@
 #include <err.h>
 
 #include "string.h"
-#include "func.h"
 
 enum symlinks
 {
