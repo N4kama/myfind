@@ -15,7 +15,11 @@ src
 -P tests
 -L -P -H tests/link_to_src
 -L -P -H -L tests/link_to_src
--name "*.c"
--name "*.sample" -name "*.c"
--name "*test*" -name "test[0-9]*"
--name "*.c" -o -name "*.sample"
+-name *.c
+-name *.sample -name *.c.
+-name *test* -name test[0-9]*
+-name *.c -o -name *.sample
+ src/ ../../ing1 -name *.c -o -name *.sample
+ -type d
+ -type f
+ src/ tests/ -type f -o -type d

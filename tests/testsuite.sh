@@ -11,7 +11,7 @@ read show_my_res
 echo
 
 success() {
-    printf "RUNNING COMMAND : \"$binary %s\"\n\n" "$2"
+    printf "RUNNING COMMAND : \"$binary %s\"\n" "$2"
     printf "RESULT : \e[92mOK\e[0m\n\n"
     if [[ "$show_my_res" =~ ^[y]+ ]]; then
         printf "STUDENT'S RESULT :\n$1\n\n"
@@ -19,7 +19,7 @@ success() {
 }
 
 failure() {
-    printf "RUNNING COMMAND : \"$binary %s\"\n\n" "$3"
+    printf "RUNNING COMMAND : \"$binary %s\"\n" "$3"
     printf "RESULT : \e[91mBAD\e[0m\n\n"
     printf "STUDENT'S RESULT :\n\n$1\n\n"
     printf "SHOULD BE :\n\n$2\n\n"
