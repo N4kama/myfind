@@ -6,5 +6,6 @@
 size_t my_strlen(char *s);
 void my_path_concat(char *dst, char *path, char *new);
 unsigned int my_strcmp(char *a, char *b);
+void my_strcpy(char *dst, char *src);
 
 #endif /* !STRING_H */

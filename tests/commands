@@ -17,9 +17,9 @@ src
 -L -P -H -L tests/link_to_src
 -name *.c
 -name *.sample -name *.c.
--name *test* -name test[0-9]*
 -name *.c -o -name *.sample
- src/ ../../ing1 -name *.c -o -name *.sample
- -type d
- -type f
- src/ tests/ -type f -o -type d
+src/ ../../ing1 -name *.c -o -name *.sample
+-type d
+-type f
+src/ tests/ -type f -o -type d
+src/ tests/ -name src -o -print -name Makefile -o -print -o -print

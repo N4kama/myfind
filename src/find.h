@@ -1,7 +1,7 @@
 #ifndef FIND_H
 # define FIND_H
 
-#define NBR_FUNC 2
+#define NBR_FUNC 3
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -80,6 +80,7 @@ struct options fill_options(char *argv[], unsigned int *start,
 
 unsigned int expr_name();
 unsigned int expr_type();
+unsigned int expr_print(char *path);
 
 struct tree *setup_tree(struct function *functions, char *argv[], int start);
 void destroy_tree(struct tree *root);

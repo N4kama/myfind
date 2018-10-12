@@ -41,3 +41,11 @@ unsigned int my_strcmp(char *a, char *b)
 	return 0;
     return 1;
 }
+
+void my_strcpy(char *dst, char *src)
+{
+    for (size_t i = 0; src[i]; i++)
+    {
+	dst[i] = src[i];
+    }
+}

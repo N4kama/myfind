@@ -2,19 +2,27 @@
 
 int is_operator(char *s)
 {
+    if (!s)
+    {
+	return -1;
+    }
     if (my_strcmp(s, "-a"))
     {
-	return 0;
+	return 1;
     }
     if (my_strcmp(s, "-o"))
     {
-	return 1;
+	return 2;
     }
     return -1;
 }
 
 int is_func_expr(char *s, struct function *functions)
 {
+    if (!s)
+    {
+	return -1;
+    }
     for (unsigned int i = 0; i < NBR_FUNC; i++)
     {
 	if (my_strcmp(s + 1, functions[i].name + 5))
@@ -27,6 +35,10 @@ int is_func_expr(char *s, struct function *functions)
 
 unsigned int is_expr_detailed(char *s, struct function *functions)
 {
+    if (!s)
+    {
+	return 0;
+    }
     if (s[0] == '-' || s[0] == '(')
     {
 	for (unsigned int i = 0; i < NBR_FUNC; i++)

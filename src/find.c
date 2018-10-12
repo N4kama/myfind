@@ -18,13 +18,13 @@ unsigned int is_dir(char *path, struct options *opt)
     }
     if ((opt->symlinks == L || opt->symlinks == H) && S_ISLNK(st.st_mode))
     {
-	DIR *dir = opendir(path);
-	if (!dir)
-	{
-	    return 0;
-	}
-	closedir(dir);
-	if (opt->symlinks == H)
+        DIR *dir = opendir(path);
+        if (!dir)
+        {
+            return 0;
+        }
+        closedir(dir);
+        if (opt->symlinks == H)
         {
             opt->symlinks = P;
         }
@@ -50,6 +50,10 @@ static unsigned int exec_func(char *path, char *name ,struct function func)
     {
         return func.func(path, func.argv[0]);
     }
+    if (my_strcmp(func.name, "expr_print"))
+    {
+        return func.func(path);
+    }
     return 0;
 }
 
@@ -65,7 +69,7 @@ static unsigned int expr_treatment_rec(char *path, char *name,
     case AND:
         if (expr_treatment_rec(path, name, expr->lson))
         {
-	    return expr_treatment_rec(path, name, expr->rson);
+            return expr_treatment_rec(path, name, expr->rson);
         }
         return 0;
         break;
@@ -84,14 +88,11 @@ static void expr_treatment(char *path, char *name, struct tree *expr)
 {
     if (!expr)
     {
-        printf("%s\n", path);
+        return;
     }
     else
     {
-        if (expr_treatment_rec(path, name, expr))
-	{
-	    printf("%s\n", path);
-	}
+        expr_treatment_rec(path, name, expr);
     }
 }
 
@@ -153,14 +154,19 @@ static void find_post_order(char path[], struct options *opt, struct tree *expr)
 
 void find(char *path, struct options *opt, struct tree *expr)
 {
+    size_t length = my_strlen(path);
+    char *path2 = malloc(length * sizeof(char));
+    my_strcpy(path2, path);
+    path2[length - 1] = '\0';
     if (opt->depth)
     {
         find_post_order(path, opt, expr);
-        expr_treatment(path, path, expr);
+        expr_treatment(path, path2, expr);// remove / from 2nd path
     }
     else
     {
-        expr_treatment(path, path, expr);
+        expr_treatment(path, path2, expr);
         find_default(path, opt, expr);
     }
+    free(path2);
 }

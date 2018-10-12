@@ -40,3 +40,9 @@ unsigned int expr_type(char *path, char *type_arg)
     }
     return 0;
 }
+
+unsigned int expr_print(char *path)
+{
+    printf("%s\n", path);
+    return 1;
+}

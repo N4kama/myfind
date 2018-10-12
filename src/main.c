@@ -6,6 +6,8 @@ void fill_functions(struct function *function)
     function[0].func = &expr_name;
     function[1].name = "expr_type";
     function[1].func = &expr_type;
+    function[2].name = "expr_print";
+    function[2].func = &expr_print;
 }
 
 void path_iter(char *argv[], unsigned int start_index,
