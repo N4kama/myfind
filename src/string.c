@@ -32,7 +32,7 @@ void my_path_concat(char *dst, char *path, char *new)
 
 unsigned int my_strcmp(char *a, char *b)
 {
-        while (*a && *b && (*a == *b))
+    while (*a && *b && (*a == *b))
     {
 	a++;
 	b++;

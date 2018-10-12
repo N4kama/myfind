@@ -1,5 +1,30 @@
 #include "find.h"
 
+int is_operator(char *s)
+{
+    if (my_strcmp(s, "-a"))
+    {
+	return 0;
+    }
+    if (my_strcmp(s, "-o"))
+    {
+	return 1;
+    }
+    return -1;
+}
+
+int is_func_expr(char *s, struct function *functions)
+{
+    for (unsigned int i = 0; i < NBR_FUNC; i++)
+    {
+	if (my_strcmp(s + 1, functions[i].name + 5))
+	{
+	    return i;
+	}
+    }
+    return -1;
+}
+
 unsigned int is_expr_detailed(char *s, struct function *functions)
 {
     if (s[0] == '-' || s[0] == '(')

@@ -1,3 +1,4 @@
+#include <fnmatch.h>
 #include "find.h"
 
 unsigned int expr_name(char *path, char *name_pattern)

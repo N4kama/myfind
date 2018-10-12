@@ -22,7 +22,7 @@ enum symlinks
 
 enum operator
 {
-    AND,
+    AND = 0,
     OR
 };
 
@@ -57,6 +57,20 @@ struct tree
     struct tree *rson;
 };
 
+struct stack
+{
+    struct tree *root;
+    struct stack *next;
+};
+
+struct stacks
+{
+    struct stack *op;
+    struct stack *func;
+};
+
+int is_operator(char *s);
+int is_func_expr(char *s, struct function *functions);
 unsigned int is_expr_detailed(char *s, struct function *functions);
 unsigned int is_expression(char *s);
 unsigned int expr_find_index(char *argv[], unsigned int start);
