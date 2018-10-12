@@ -7,6 +7,7 @@ src
 -H
 -H tests
 -H tests/link_to_src
+-H tests/link_to_file
 -L tests
 -d -L tests
 -L
@@ -16,4 +17,5 @@ src
 -L -P -H -L tests/link_to_src
 -name "*.c"
 -name "*.sample" -name "*.c"
-./myfind -name "*test*" -name "test[0-9]*"
+-name "*test*" -name "test[0-9]*"
+-name "*.c" -o -name "*.sample"

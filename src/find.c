@@ -8,10 +8,23 @@ unsigned int is_dir(char *path, struct options *opt)
         warnx("cannot do stat: Error while with stats of file : %s", path);
         opt->return_value = 1;
     }
-    if (S_ISDIR(st.st_mode) || (S_ISLNK(st.st_mode) && (opt->symlinks == L ||
-                                                        opt->symlinks == H)))
+    if (S_ISDIR(st.st_mode))
     {
         if (opt->symlinks == H)
+        {
+            opt->symlinks = P;
+        }
+        return 1;
+    }
+    if ((opt->symlinks == L || opt->symlinks == H) && S_ISLNK(st.st_mode))
+    {
+	DIR *dir = opendir(path);
+	if (!dir)
+	{
+	    return 0;
+	}
+	closedir(dir);
+	if (opt->symlinks == H)
         {
             opt->symlinks = P;
         }

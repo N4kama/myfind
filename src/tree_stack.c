@@ -92,7 +92,7 @@ static void fill_stacks(struct stacks *stacks, char *argv[], unsigned int start,
             if ((r = is_operator(argv[start])) != -1)
             {
                 enum operator op = r;
-                stacks->func = push(stacks->op, OPERATOR, op, functions[0]);
+                stacks->op = push(stacks->op, OPERATOR, op, functions[0]);
                 start++;
             }
         }
