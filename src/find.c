@@ -27,64 +27,58 @@ static void check_error_dir(char path[], struct options *opt)
     opt->return_value = 1;
 }
 
-static unsigned int exec_func(char *path, struct function func)
+static unsigned int exec_func(char *path, char *name ,struct function func)
 {
     if (my_strcmp(func.name, "expr_name"))
     {
-	return func.func(path, func.argv[0]);
+        return func.func(name, func.argv[0]);
     }
     if (my_strcmp(func.name, "expr_type"))
     {
-	return func.func(path, func.argv[0]);
+        return func.func(path, func.argv[0]);
     }
     return 0;
 }
 
-static unsigned int expr_treatment_rec(char *path, struct tree *expr)
+static unsigned int expr_treatment_rec(char *path, char *name,
+                                       struct tree *expr)
 {
-    if (expr->mode == OPERATOR)
+    if (expr->mode == FUNC)
     {
-        switch (expr->operator)
-        {
-        case AND:
-            if (expr_treatment_rec(path, expr->lson))
-            {
-                return expr_treatment_rec(path, expr->rson);
-            }
-            return 0;
-            break;
-        case OR:
-            if (expr_treatment_rec(path, expr->lson))
-            {
-                return 1;
-            }
-            return expr_treatment_rec(path, expr->rson);
-            break;
-        default:
-            return 0;
-        }
+        return exec_func(path, name, expr->func);
     }
-    else
+    switch (expr->operator)
     {
-        if(exec_func(path, expr->func))
-	{
-	    printf("%s\n", path);
-	    return 1;
-	}
-	return 0;
+    case AND:
+        if (expr_treatment_rec(path, name, expr->lson))
+        {
+	    return expr_treatment_rec(path, name, expr->rson);
+        }
+        return 0;
+        break;
+    case OR:
+        if (expr_treatment_rec(path, name, expr->lson))
+        {
+            return 1;
+        }
+        return expr_treatment_rec(path, name, expr->rson);
+    default:
+        return 0;
     }
 }
 
-static void expr_treatment(char *path, struct tree *expr)
+static void expr_treatment(char *path, char *name, struct tree *expr)
 {
-    //IF EXPR IS NULL, THEN THERE IS NO EXPR, SO IT JUST PRINTS
     if (!expr)
     {
         printf("%s\n", path);
     }
     else
     {
-        expr_treatment_rec(path, expr);
+        if (expr_treatment_rec(path, name, expr))
+	{
+	    printf("%s\n", path);
+	}
     }
 }
 
@@ -108,7 +102,7 @@ static void find_default(char path[], struct options *opt, struct tree *expr)
             size_t len = my_strlen(path) + my_strlen(cur->d_name) + 2;
             char *new = malloc(len * sizeof(char));
             my_path_concat(new, path, cur->d_name);
-            expr_treatment(new, expr);
+            expr_treatment(new, cur->d_name, expr);
             find_default(new, opt, expr);
             free(new);
         }
@@ -137,7 +131,7 @@ static void find_post_order(char path[], struct options *opt, struct tree *expr)
             char *new = malloc(len * sizeof(char));
             my_path_concat(new, path, cur->d_name);
             find_post_order(new, opt, expr);
-            expr_treatment(new, expr);
+            expr_treatment(new, cur->d_name, expr);
             free(new);
         }
     }
@@ -149,11 +143,11 @@ void find(char *path, struct options *opt, struct tree *expr)
     if (opt->depth)
     {
         find_post_order(path, opt, expr);
-        expr_treatment(path, expr);
+        expr_treatment(path, path, expr);
     }
     else
     {
-        expr_treatment(path, expr);
+        expr_treatment(path, path, expr);
         find_default(path, opt, expr);
     }
-} //NEED TO CREATE FUNC.C WITH THE FUNCTION IMPLEM
+}

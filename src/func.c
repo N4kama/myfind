@@ -1,12 +1,13 @@
 #include <fnmatch.h>
 #include "find.h"
 
-unsigned int expr_name(char *path, char *name_pattern)
+unsigned int expr_name(char *name, char *name_pattern)
 {
-    //BULLSHIT
-    if (path || name_pattern)
+    if (!fnmatch(name_pattern, name, 0))
+    {
 	return 1;
-    return 1;
+    }
+    return 0;
 }
 
 unsigned int expr_type(char *path, char *type)

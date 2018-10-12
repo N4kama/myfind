@@ -31,7 +31,7 @@ unsigned int is_expr_detailed(char *s, struct function *functions)
     {
 	for (unsigned int i = 0; i < NBR_FUNC; i++)
 	{
-	    if (my_strcmp(s + 1, functions[i].name))
+	    if (my_strcmp(s + 1, functions[i].name + 5))
 	    {
 		return 1;
 	    }
@@ -86,7 +86,7 @@ unsigned int check_options(struct options *opt, char *option)
     default:
 	if (is_expr_detailed(option, opt->functions))
 	{
-	    return 1;
+	    return 0;
 	}
         opt->fail_option = option;
         opt->return_value = 1;

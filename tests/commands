@@ -14,3 +14,6 @@ src
 -P tests
 -L -P -H tests/link_to_src
 -L -P -H -L tests/link_to_src
+-name "*.c"
+-name "*.sample" -name "*.c"
+./myfind -name "*test*" -name "test[0-9]*"
