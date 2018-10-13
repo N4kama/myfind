@@ -61,8 +61,7 @@ static unsigned int exec_func(char *path, char *name ,struct function func)
     }
     if (my_strcmp(func.name, "expr_execdir"))
     {
-        int *tab = replace_with_path(path, func.argv);
-        return func.func(path, func.argv, tab);
+        return func.func(path, name, func.argv);
     }
     return 0;
 }

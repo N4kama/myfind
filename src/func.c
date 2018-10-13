@@ -54,7 +54,10 @@ unsigned int expr_exec(char *argv[], int *tab)
     {
         execvp(argv[0], argv);
     }
-    waitpid(pid, &status, WUNTRACED | WCONTINUED);
+    while (waitpid(pid, &status, 0) == pid)
+    {
+        continue;
+    }
     replace_path(argv, tab);
     if (!WEXITSTATUS(status))
     {
@@ -63,12 +66,32 @@ unsigned int expr_exec(char *argv[], int *tab)
     return 0;
 }
 
-unsigned int expr_execdir(char *path, char *argv[], int *tab)
+unsigned int expr_execdir(char *pathh, char *name, char *argv[])
 {
-    free(tab);
-    if (path || argv || tab)
+    size_t len = my_strlen(pathh) - 1;
+    char *path = malloc((len + 1) * sizeof(char));
+    my_strcpy(path, pathh);
+    len--;
+    for (; path[len] && path[len] != '/'; len--)
     {
-        return 1;
+        continue;
     }
-    return 1;
+    if (path[len])
+    {
+        path[len] = '\0';
+        chdir(path);
+    }
+    char *new = malloc((my_strlen(name) + 2) * sizeof(char));
+    new[0] = '.';
+    new[1] = '/';
+    my_strcpy(new + 2, name);
+    int *tab = replace_with_path(new, argv);
+    unsigned int r = expr_exec(argv, tab);
+    free(new);
+    if (path[len])
+    {
+        chdir(pathh);
+    }
+    free(path);
+    return r;
 }

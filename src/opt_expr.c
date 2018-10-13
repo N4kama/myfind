@@ -44,7 +44,7 @@ unsigned int is_test_func(char *s)
 
 unsigned int is_action_func(char *s)
 {
-    if (my_strcmp(s, "exec"))
+    if (my_strcmp(s, "exec") || my_strcmp(s, "exec"))
     {
         return 1;
     }

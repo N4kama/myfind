@@ -66,7 +66,8 @@ unsigned int is_print_needed(struct stacks *stacks, char *argv[],
         return 0;
     }
     if (!s && (my_strcmp("expr_print", prev_func) ||
-               my_strcmp("expr_exec", prev_func)))
+               my_strcmp("expr_exec", prev_func) ||
+               my_strcmp("expr_execdir", prev_func)))
     {
         return 0;
     }
@@ -187,7 +188,7 @@ void destroy_tree(struct tree *root)
     }
     destroy_tree(root->lson);
     destroy_tree(root->rson);
-    if (root->func.argv)
+    if (root->mode == FUNC && root->func.argv)
     {
         free(root->func.argv);
     }
