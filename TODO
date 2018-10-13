@@ -1,9 +1,9 @@
 TODO:
 
-HANDLE PARSING ERRORS
+-Gestion of the parenthesis,
 
-PARENTHESIS IN PARSING
+-some cases with -print don't work
 
-ERRORS IN MULTIPLES FUNCTIONS NOT HANDLED
+-Handling errors in <expression>
 
-MORE FUNCTIONS
+Everything above threshold 5 (included)
