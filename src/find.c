@@ -54,6 +54,16 @@ static unsigned int exec_func(char *path, char *name ,struct function func)
     {
         return func.func(path);
     }
+    if (my_strcmp(func.name, "expr_exec"))
+    {
+        int *tab = replace_with_path(path, func.argv);
+        return func.func(func.argv, tab);
+    }
+    if (my_strcmp(func.name, "expr_execdir"))
+    {
+        int *tab = replace_with_path(path, func.argv);
+        return func.func(path, func.argv, tab);
+    }
     return 0;
 }
 
@@ -124,7 +134,8 @@ static void find_default(char path[], struct options *opt, struct tree *expr)
     closedir(dir);
 }
 
-static void find_post_order(char path[], struct options *opt, struct tree *expr)
+static void find_post_order(char path[], struct options *opt,
+                            struct tree *expr)
 {
     if (!is_dir(path, opt))
     {
@@ -161,7 +172,7 @@ void find(char *path, struct options *opt, struct tree *expr)
     if (opt->depth)
     {
         find_post_order(path, opt, expr);
-        expr_treatment(path, path2, expr);// remove / from 2nd path
+        expr_treatment(path, path2, expr);
     }
     else
     {

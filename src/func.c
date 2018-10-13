@@ -16,7 +16,6 @@ unsigned int expr_type(char *path, char *type_arg)
     struct stat st;
     if (lstat(path, &st))
     {
-        //ERROR
         return 0;
     }
     switch (type)
@@ -44,5 +43,32 @@ unsigned int expr_type(char *path, char *type_arg)
 unsigned int expr_print(char *path)
 {
     printf("%s\n", path);
+    return 1;
+}
+
+unsigned int expr_exec(char *argv[], int *tab)
+{
+    pid_t pid;
+    int status;
+    if (!(pid = fork()))
+    {
+        execvp(argv[0], argv);
+    }
+    waitpid(pid, &status, WUNTRACED | WCONTINUED);
+    replace_path(argv, tab);
+    if (!WEXITSTATUS(status))
+    {
+        return 1;
+    }
+    return 0;
+}
+
+unsigned int expr_execdir(char *path, char *argv[], int *tab)
+{
+    free(tab);
+    if (path || argv || tab)
+    {
+        return 1;
+    }
     return 1;
 }

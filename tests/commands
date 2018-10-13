@@ -18,8 +18,13 @@ src
 -name *.c
 -name *.sample -name *.c.
 -name *.c -o -name *.sample
+-name *test* -name test[0-9]*
 src/ ../../ing1 -name *.c -o -name *.sample
 -type d
 -type f
 src/ tests/ -type f -o -type d
 src/ tests/ -name src -o -print -name Makefile -o -print -o -print
+-name test1 -o -name test2 -print
+tests/ -exec pwd \;
+src/ -exec md5sum {} \; -exec echo ok \;
+src/ -exec pwd \; -exec echo -- {} -- \;

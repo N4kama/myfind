@@ -8,6 +8,10 @@ void fill_functions(struct function *function)
     function[1].func = &expr_type;
     function[2].name = "expr_print";
     function[2].func = &expr_print;
+    function[3].name = "expr_exec";
+    function[3].func = &expr_exec;
+    function[4].name = "expr_execdir";
+    function[4].func = &expr_execdir;
 }
 
 void path_iter(char *argv[], unsigned int start_index,
@@ -20,7 +24,7 @@ void path_iter(char *argv[], unsigned int start_index,
     else
     {
         for (; argv[start_index] && !is_expression(argv[start_index]);
-	     start_index++)
+             start_index++)
         {
             find(argv[start_index], opt, expr);
         }

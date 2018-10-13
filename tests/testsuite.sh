@@ -30,14 +30,14 @@ while IFS='' read -a command; do
     if [[ "$command" =~ .*-d.* ]]; then
         altcommand=${command/-d}
         altcommand="$altcommand"" -depth"
-	my_res=$("$binary" $command)
-	res=$(find $altcommand)
+        my_res=$("$binary" $command)
+        res=$(find $altcommand)
     else
-	my_res=$("$binary" $command)
-	res=$(find $command)
+        my_res=$("$binary" $command)
+        res=$(find $command)
     fi
     if test "$my_res" == "$res"; then
-	success "$my_res" "$command"
+        success "$my_res" "$command"
     else
         failure "$my_res" "$res" "$command"
     fi
