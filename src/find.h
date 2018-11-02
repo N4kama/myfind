@@ -1,5 +1,5 @@
 #ifndef FIND_H
-# define FIND_H
+#define FIND_H
 
 #define NBR_FUNC 5
 

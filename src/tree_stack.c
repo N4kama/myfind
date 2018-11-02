@@ -11,7 +11,7 @@ static struct tree *create_tree(enum mode mode, enum operator op,
     root->mode = mode;
     if (mode == OPERATOR)
     {
-        root->operator = op;
+        root->operator= op;
     }
     else
     {
@@ -55,19 +55,19 @@ unsigned int is_print_needed(struct stacks *stacks, char *argv[],
 {
     char *s = argv[start];
     char *prev_func = stacks->func->root->func.name;
-    if (s && (is_operator(s) + 1 || my_strcmp(s, "-print") ||
-              my_strcmp("expr_print", prev_func)))
+    if (s && (is_operator(s) + 1 || my_strcmp(s, "-print")
+        || my_strcmp("expr_print", prev_func)))
     {
         return 0;
     }
-    if (s && ((is_operator(argv[start + 1]) > 0) || is_test_func(s + 1) ||
-              is_action_func(prev_func + 5)))
+    if (s && ((is_operator(argv[start + 1]) > 0) || is_test_func(s + 1)
+        || is_action_func(prev_func + 5)))
     {
         return 0;
     }
-    if (!s && (my_strcmp("expr_print", prev_func) ||
-               my_strcmp("expr_exec", prev_func) ||
-               my_strcmp("expr_execdir", prev_func)))
+    if (!s && (my_strcmp("expr_print", prev_func)
+        || my_strcmp("expr_exec", prev_func)
+        || my_strcmp("expr_execdir", prev_func)))
     {
         return 0;
     }
@@ -80,20 +80,20 @@ unsigned int is_print_needed(struct stacks *stacks, char *argv[],
 static void setup_argv(struct function *func, char *argv[], unsigned int *start,
                        struct function *functions)
 {
-    if (!argv[*start] || is_operator(argv[*start]) != -1 ||
-        is_func_expr(argv[*start], functions) != -1)
+    if (!argv[*start] || is_operator(argv[*start]) != -1
+        || is_func_expr(argv[*start], functions) != -1)
     {
         func->argv = NULL;
         return;
     }
-    if (my_strcmp(func->name, "expr_name") ||
-        my_strcmp(func->name, "expr_type"))
+    if (my_strcmp(func->name, "expr_name")
+        || my_strcmp(func->name, "expr_type"))
     {
         func->argv = malloc(sizeof(char *));
         func->argv[0] = argv[*start];
     }
-    if (my_strcmp(func->name, "expr_exec") ||
-        my_strcmp(func->name, "expr_execdir"))
+    if (my_strcmp(func->name, "expr_exec")
+        || my_strcmp(func->name, "expr_execdir"))
     {
         char **new = NULL;
         fill_str_cmd(argv, start, &new);
@@ -102,8 +102,8 @@ static void setup_argv(struct function *func, char *argv[], unsigned int *start,
     *start += 1;
 }
 
-static void fill_stacks(struct stacks *stacks, char *argv[], unsigned int start,
-                        struct function *functions)
+static void fill_stacks(struct stacks *stacks, char *argv[],
+                        unsigned int start, struct function *functions)
 {
     int r;
     for (; argv[start];)
@@ -124,7 +124,7 @@ static void fill_stacks(struct stacks *stacks, char *argv[], unsigned int start,
             }
         }
         else
-         {
+        {
             if ((r = is_operator(argv[start])) != -1)
             {
                 enum operator op = r - 1;
@@ -172,9 +172,9 @@ struct tree *setup_tree(struct function *functions, char *argv[], int start)
         return root;
     }
     struct stacks stacks =
-        {
+    {
             NULL, NULL
-        };
+    };
     fill_stacks(&stacks, argv, start, functions);
     struct tree *root = fill_tree(&stacks);
     return root;

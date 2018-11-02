@@ -25,7 +25,7 @@ failure() {
     printf "SHOULD BE :\n\n$2\n\n"
 }
 
-while IFS='' read -a command; do
+while IFS='' read command; do
     altcmd=0
     if [[ "$command" =~ .*-d.* ]]; then
         altcommand=${command/-d}

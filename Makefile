@@ -11,4 +11,4 @@ check: all
 	./tests/testsuite.sh
 
 clean:
-	rm $(RES)
+	$(RM) $(RES)

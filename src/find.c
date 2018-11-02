@@ -40,7 +40,7 @@ static void check_error_dir(char path[], struct options *opt)
     opt->return_value = 1;
 }
 
-static unsigned int exec_func(char *path, char *name ,struct function func)
+static unsigned int exec_func(char *path, char *name, struct function func)
 {
     if (my_strcmp(func.name, "expr_name"))
     {
