@@ -1,4 +1,15 @@
-MYFIND :
+
+ /$$      /$$ /$$     /$$       /$$$$$$$$ /$$$$$$ /$$   /$$ /$$$$$$$ 
+| $$$    /$$$|  $$   /$$/      | $$_____/|_  $$_/| $$$ | $$| $$__  $$
+| $$$$  /$$$$ \  $$ /$$/       | $$        | $$  | $$$$| $$| $$  \ $$
+| $$ $$/$$ $$  \  $$$$/        | $$$$$     | $$  | $$ $$ $$| $$  | $$
+| $$  $$$| $$   \  $$/         | $$__/     | $$  | $$  $$$$| $$  | $$
+| $$\  $ | $$    | $$          | $$        | $$  | $$\  $$$| $$  | $$
+| $$ \/  | $$    | $$          | $$       /$$$$$$| $$ \  $$| $$$$$$$/
+|__/     |__/    |__/          |__/      |______/|__/  \__/|_______/ 
+                                                                     
+                                                                     
+                                                                     
 
 MYFIND is a c program that copies the function "find" in bash.
 
@@ -23,4 +34,6 @@ Usage :
 
     <-name "<pattern>"> <-type [bcdflps]> <-print> <-exec <command>\;>
 
-Author : romain.baguet ING1
+note: see man page of 'find' for more information
+
+Author : romain.baguet 
